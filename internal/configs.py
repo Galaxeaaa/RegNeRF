@@ -155,8 +155,8 @@ def load_config(save_config=True):
   gin.parse_config_files_and_bindings(
       flags.FLAGS.gin_configs, flags.FLAGS.gin_bindings, skip_unknown=True)
   config = Config()
-  if save_config and jax.host_id() == 0:
-    os.makedirs(config.checkpoint_dir)
+  if save_config and jax.process_index() == 0:
+    os.makedirs(config.checkpoint_dir, exist_ok=True)
     with open(config.checkpoint_dir + '/config.gin', 'w') as f:
       f.write(gin.config_str())
   return config
