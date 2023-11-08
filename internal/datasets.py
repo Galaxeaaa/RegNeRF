@@ -25,6 +25,7 @@ from internal import math, utils  # pylint: disable=g-multiple-import
 import jax
 import numpy as np
 from PIL import Image
+import pdb
 
 
 def load_dataset(split, train_dir, config):
@@ -879,6 +880,7 @@ class Blender(Dataset):
       raise ValueError('render_path cannot be used for the blender dataset.')
     with utils.open_file(
         path.join(self.data_dir, f'transforms_{self.split}.json'), 'r') as fp:
+      print(f"datadir: {self.data_dir}")
       meta = json.load(fp)
     images = []
     disp_images = []
@@ -931,8 +933,39 @@ class Blender(Dataset):
     self.images_all = images
     self.camtoworlds_all = np.stack(cams, axis=0)
     if self.split == 'train' and config.n_input_views > 0:
-      self.images = images[:config.n_input_views]
-      self.camtoworlds = np.stack(cams[:config.n_input_views], axis=0)
+      if config.hardcode_views:
+        print(f"Loaded hardcoded views: {config.hardcode_views}")
+        hardcode_views_dict_4 = {
+          "ship": [50,17,9,31],
+          "mic": [52,37,73,64],
+          "materials": [33,39,36,5],
+          "hotdog": [22,62,96,23],
+          "ficus": [23,52,24,91],
+          "drums": [80,65,72,66],
+          "chair": [55,87,94,5],
+          "lego": [16,57,28,1]
+        }
+        hardcode_views_dict_6 = {
+          "ship": [13,74,9,95,31,7],
+          "mic": [30,37,79,64,82,7],
+          "materials": [19,22,82,52,51,53],
+          "hotdog": [33,92,57,19,94,23],
+          "ficus": [51,37,69,1,31,93],
+          "drums": [71,46,18,85,39,25],
+          "chair": [94,29,46,8,28,5],
+          "lego": [71,1,47,83,73,15],
+        }
+        if config.n_input_views == 4:
+          selected_views = hardcode_views_dict_4[config.blender_scene]
+        elif config.n_input_views == 6:
+          selected_views = hardcode_views_dict_6[config.blender_scene]
+        print(f"Selected views for {config.blender_scene} are {selected_views}.")
+        self.images = images[selected_views]
+        self.camtoworlds = np.stack(np.array(cams)[selected_views], axis=0)
+      else:
+        print(f"Loaded {config.n_input_views} views.")
+        self.images = images[:config.n_input_views]
+        self.camtoworlds = np.stack(cams[:config.n_input_views], axis=0)
     else:
       self.images = images
       self.camtoworlds = np.stack(cams, axis=0)

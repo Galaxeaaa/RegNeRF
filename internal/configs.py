@@ -121,6 +121,7 @@ class Config:
   print_every: int = 100  # The number of steps between reports to tensorboard.
   train_render_every: int = 10000  # Steps between test set renders for training
   n_input_views: int = 9  # Restrict the number of input views.
+  hardcode_views: bool = True
   n_random_poses: int = 10000  # How many random poses to use.
   patch_size: int = 8  # Patch size for random pose losses
   load_random_rays: bool = True  # Whether to load random rays.
