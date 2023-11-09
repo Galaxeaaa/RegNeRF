@@ -4,8 +4,8 @@
  Config.checkpoint_dir = "out/nerf_synthetic/chair4" 
  Config.dataset_loader = 'blender' 
  Config.white_background = True 
- Config.factor = 8 
- Config.render_factor = 8 
+ Config.factor = 0 
+ Config.render_factor = 0 
  Config.near = 0 
  Config.far = 1 
  MipNerfModel.ray_shape = 'cylinder' 
