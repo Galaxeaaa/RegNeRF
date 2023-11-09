@@ -33,6 +33,8 @@ def main(unused_argv):
 
   config = configs.load_config(save_config=False)
   config.render_path = True
+  if config.dataset_loader == 'blender':
+    config.render_path = False
 
   dataset = datasets.load_dataset('test', config.data_dir, config)
   model, init_variables = models.construct_mipnerf(
