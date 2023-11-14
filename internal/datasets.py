@@ -35,6 +35,7 @@ def load_dataset(split, train_dir, config):
       'llff': LLFF,
       'multicam': Multicam,
       'dtu': DTU,
+      'oppo': OpenIllumination,
   }
   return dataset_dict[config.dataset_loader](split, train_dir, config)
 
@@ -974,6 +975,99 @@ class Blender(Dataset):
     self.resolution = self.height * self.width
 
     self.focal = .5 * self.width / np.tan(.5 * float(meta['camera_angle_x']))
+    self.n_examples = self.images.shape[0]
+
+
+class OpenIllumination(Dataset):
+  """OpenIllumination Dataset."""
+
+  def _load_renderings(self, config):
+    """Load images from disk."""
+    if config.render_path:
+      raise ValueError('render_path cannot be used for the oppo dataset.')
+    with utils.open_file(
+        path.join(self.data_dir, f'../../transforms_alignz_{self.split}.json'), 'r') as fp:
+      print(f"datadir: {self.data_dir}")
+      meta = json.load(fp)['frames']
+    images = []
+    disp_images = []
+    normal_images = []
+    cams = []
+    for frame in list(meta.values()):
+      imgid = frame["file_path"].split("/")[-1]
+      fprefix = os.path.join(self.data_dir, f"../Lights/013/raw_undistorted/{imgid}")
+      # fprefix = os.path.join(self.data_dir, frame['file_path'])
+      if self.use_tiffs:
+        channels = []
+        for ch in ['R', 'G', 'B', 'A']:
+          with utils.open_file(fprefix + f'_{ch}.tiff', 'rb') as imgin:
+            channels.append(np.array(Image.open(imgin), dtype=np.float32))
+        # Convert image to sRGB color space.
+        image = math.linear_to_srgb(np.stack(channels, axis=-1))
+      else:
+        with utils.open_file(fprefix + '.JPG', 'rb') as imgin:
+          image = np.array(Image.open(imgin), dtype=np.float32) / 255.
+          mask_path = os.path.join(self.data_dir, f"com_masks/{imgid}.png")
+          mask = cv2.imread(mask_path, 2) > 0
+          image = image * mask[..., None] + (1 - mask[..., None])
+          image = np.concatenate([image, mask[..., None]], axis=-1)
+
+      if self.load_disps:
+        with utils.open_file(fprefix + '_disp.tiff', 'rb') as imgin:
+          disp_image = np.array(Image.open(imgin), dtype=np.float32)
+      if self.load_normals:
+        with utils.open_file(fprefix + '_normal.png', 'rb') as imgin:
+          normal_image = np.array(
+              Image.open(imgin), dtype=np.float32)[Ellipsis, :3] * 2. / 255. - 1.
+
+      if config.factor > 1:
+        image = downsample(image, config.factor)
+        if self.load_disps:
+          disp_image = downsample(disp_image, config.factor)
+        if self.load_normals:
+          normal_image = downsample(normal_image, config.factor)
+
+      cams.append(np.array(frame['transform_matrix'], dtype=np.float32))
+      images.append(image)
+      if self.load_disps:
+        disp_images.append(disp_image)
+      if self.load_normals:
+        normal_images.append(normal_image)
+
+    self.images = np.stack(images, axis=0)
+    if self.load_disps:
+      self.disp_images = np.stack(disp_images, axis=0)
+    if self.load_normals:
+      self.normal_images = np.stack(normal_images, axis=0)
+
+    rgb, alpha = self.images[Ellipsis, :3], self.images[Ellipsis, -1:]
+    images = rgb * alpha + (1. - alpha) if config.white_background else rgb
+
+    self.images_all = images
+    self.camtoworlds_all = np.stack(cams, axis=0)
+    if self.split == 'train' and config.n_input_views > 0:
+      if config.hardcode_views:
+        print(f"Loaded hardcoded views: {config.hardcode_views}")
+        if config.n_input_views == 4:
+          selected_views = [0, 1, 2, 3]
+        elif config.n_input_views == 6:
+          selected_views = [10, 3, 19, 22, 17, 35]
+        print(f"Selected views for {self.data_dir.split('/')[-2]} are {selected_views}.")
+        self.images = images[selected_views]
+        self.camtoworlds = np.stack(np.array(cams)[selected_views], axis=0)
+      else:
+        print(f"Loaded {config.n_input_views} views.")
+        self.images = images[:config.n_input_views]
+        self.camtoworlds = np.stack(cams[:config.n_input_views], axis=0)
+    else:
+      self.images = images
+      self.camtoworlds = np.stack(cams, axis=0)
+
+    self.height, self.width = self.images.shape[1:3]
+    self.resolution = self.height * self.width
+
+    first_meta = list(meta.values())[0]
+    self.focal = .5 * self.width / np.tan(.5 * float(first_meta['camera_angle_x']))
     self.n_examples = self.images.shape[0]
 
 
