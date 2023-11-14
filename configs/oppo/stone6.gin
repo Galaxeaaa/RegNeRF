@@ -3,14 +3,14 @@
  Config.checkpoint_dir = "out/oppo/stone6" 
  Config.dataset_loader = 'oppo' 
  Config.white_background = True 
- Config.factor = 0 
+ Config.factor = 32
  Config.render_factor = 0 
  Config.near = 0 
  Config.far = 1 
  MipNerfModel.ray_shape = 'cylinder' 
  MLP.density_noise = 1. 
  
- Config.n_input_views = 4 
+ Config.n_input_views = 6
  Config.hardcode_views = True 
  Config.max_steps = 139535 
  
