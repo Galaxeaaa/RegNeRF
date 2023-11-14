@@ -29,6 +29,11 @@ import numpy as np
 from skimage.metrics import structural_similarity
 import tensorflow as tf
 
+from lpips import LPIPS
+import torch
+
+lpips_vgg = LPIPS(net="vgg").cuda()
+
 CENSUS_EPSILON = 1 / 256  # Guard against ground-truth quantization.
 
 configs.define_common_flags()
@@ -75,6 +80,11 @@ def main(unused_argv):
 
   census_fn = jax.jit(
       functools.partial(math.compute_census_err, epsilon=CENSUS_EPSILON))
+
+  def lpips_fn(x, y):
+    score = lpips_vgg(torch.from_numpy(np.array(x)).cuda().permute(2, 0, 1).unsqueeze(0),
+                      torch.from_numpy(np.array(y)).cuda().permute(2, 0, 1).unsqueeze(0))
+    return score.item()
 
   print('WARNING: LPIPS calculation not supported. NaN values used instead.')
   if config.eval_disable_lpips:

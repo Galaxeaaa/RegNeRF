@@ -6,7 +6,7 @@ n_views = [4, 6]
 for n in n_views:
     for value in values:
         # Create a filename based on the value
-        filename = f"{value}{n}.gin"
+        filename = f"{value}-{n}v.gin"
         
         # Define the content of the file, replacing a placeholder with the value
         content = f" \
@@ -23,9 +23,9 @@ Config.far = 1 \n \
 MipNerfModel.ray_shape = 'cylinder' \n \
 MLP.density_noise = 1. \n \
 \n \
-Config.n_input_views = 4 \n \
+Config.n_input_views = {n} \n \
 Config.hardcode_views = True \n \
-Config.max_steps = 139535 \n \
+Config.max_steps = 100000 \n \
 \n \
 Config.lr_init = 0.002 \n \
 Config.lr_final = 0.00002 \n \
