@@ -86,11 +86,11 @@ def main(unused_argv):
                       torch.from_numpy(np.array(y)).cuda().permute(2, 0, 1).unsqueeze(0))
     return score.item()
 
-  print('WARNING: LPIPS calculation not supported. NaN values used instead.')
-  if config.eval_disable_lpips:
-    lpips_fn = lambda x, y: np.nan
-  else:
-    lpips_fn = lambda x, y: np.nan
+  # print('WARNING: LPIPS calculation not supported. NaN values used instead.')
+  # if config.eval_disable_lpips:
+  #   lpips_fn = lambda x, y: np.nan
+  # else:
+  #   lpips_fn = lambda x, y: np.nan
 
   last_step = 0
   out_dir = path.join(config.checkpoint_dir,
