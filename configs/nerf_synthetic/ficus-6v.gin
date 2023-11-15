@@ -4,16 +4,16 @@
  Config.checkpoint_dir = "out/nerf_synthetic/ficus6" 
  Config.dataset_loader = 'blender' 
  Config.white_background = True 
- Config.factor = 0 
+ Config.factor = 8 
  Config.render_factor = 0 
  Config.near = 0 
  Config.far = 1 
  MipNerfModel.ray_shape = 'cylinder' 
  MLP.density_noise = 1. 
  
- Config.n_input_views = 4 
+ Config.n_input_views = 6 
  Config.hardcode_views = True 
- Config.max_steps = 139535 
+ Config.max_steps = 100000 
  
  Config.lr_init = 0.002 
  Config.lr_final = 0.00002 
