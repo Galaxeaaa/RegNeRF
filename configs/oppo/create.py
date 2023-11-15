@@ -18,14 +18,14 @@ for n in n_views:
  Config.white_background = True \n \
  Config.factor = 32\n \
  Config.render_factor = 0 \n \
- Config.near = 0 \n \
- Config.far = 1 \n \
+ Config.near = 0.5 \n \
+ Config.far = 1.5 \n \
  MipNerfModel.ray_shape = "cylinder" \n \
  MLP.density_noise = 1. \n \
  \n \
  Config.n_input_views = {n}\n \
  Config.hardcode_views = True \n \
- Config.max_steps = 139535 \n \
+ Config.max_steps = 100000 \n \
  \n \
  Config.lr_init = 0.002 \n \
  Config.lr_final = 0.00002 \n \

@@ -5,14 +5,14 @@
   Config.white_background = True 
   Config.factor = 32
   Config.render_factor = 0 
-  Config.near = 0 
-  Config.far = 1 
+  Config.near = 0.5 
+  Config.far = 1.5 
   MipNerfModel.ray_shape = "cylinder" 
   MLP.density_noise = 1. 
   
   Config.n_input_views = 6
   Config.hardcode_views = True 
-  Config.max_steps = 139535 
+  Config.max_steps = 100000 
   
   Config.lr_init = 0.002 
   Config.lr_final = 0.00002 
