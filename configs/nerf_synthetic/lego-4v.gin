@@ -1,10 +1,10 @@
  # Blender 
  Config.data_dir = "./data/nerf_synthetic" 
- Config.blender_scene = "chair" 
- Config.checkpoint_dir = "out/nerf_synthetic/chair6" 
+ Config.blender_scene = "lego" 
+ Config.checkpoint_dir = "out/nerf_synthetic/lego4" 
  Config.dataset_loader = 'blender' 
  Config.white_background = True 
- Config.factor = 0 
+ Config.factor = 8 
  Config.render_factor = 0 
  Config.near = 0 
  Config.far = 1 
@@ -13,7 +13,7 @@
  
  Config.n_input_views = 4 
  Config.hardcode_views = True 
- Config.max_steps = 139535 
+ Config.max_steps = 100000 
  
  Config.lr_init = 0.002 
  Config.lr_final = 0.00002 
