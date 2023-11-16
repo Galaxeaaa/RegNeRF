@@ -33,4 +33,5 @@
   Config.depth_tvnorm_loss_mult_end = 0.1 
   
   Config.flow_loss_mult = 0.0 
+  Config.train_render_every = 5000 
  

@@ -46,6 +46,7 @@ for n in n_views:
  Config.depth_tvnorm_loss_mult_end = 0.1 \n \
  \n \
  Config.flow_loss_mult = 0.0 \n \
+ Config.train_render_every = 5000 \n \
 '
         # Create and write to the file
         with open(filename, "w") as file:
