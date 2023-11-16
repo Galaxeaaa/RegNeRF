@@ -3,7 +3,7 @@
   Config.checkpoint_dir = "out/oppo/stone-6v" 
   Config.dataset_loader = "oppo" 
   Config.white_background = True 
-  Config.factor = 32
+  Config.factor = 8
   Config.render_factor = 0 
   Config.near = 0.5 
   Config.far = 1.5 

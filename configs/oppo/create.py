@@ -16,7 +16,7 @@ for n in n_views:
  Config.checkpoint_dir = "out/oppo/{value}-{n}v" \n \
  Config.dataset_loader = "oppo" \n \
  Config.white_background = True \n \
- Config.factor = 4\n \
+ Config.factor = 8\n \
  Config.render_factor = 0 \n \
  Config.near = 0.5 \n \
  Config.far = 1.5 \n \
