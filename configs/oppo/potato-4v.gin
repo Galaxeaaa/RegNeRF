@@ -1,0 +1,37 @@
+  # Oppo 
+  Config.data_dir = "./data/openillumination/lighting_patterns/obj_39_potato/output"
+  Config.checkpoint_dir = "out/oppo/potato-4v" 
+  Config.dataset_loader = "oppo" 
+  Config.white_background = True 
+  Config.factor = 8
+  Config.render_factor = 0 
+  Config.near = 0.5 
+  Config.far = 1.5 
+  MipNerfModel.ray_shape = "cylinder" 
+  MLP.density_noise = 1. 
+  
+  Config.n_input_views = 4
+  Config.hardcode_views = True 
+  Config.max_steps = 100000 
+  
+  Config.lr_init = 0.002 
+  Config.lr_final = 0.00002 
+  Config.lr_delay_steps = 512 
+  Config.lr_delay_mult = 0.01 
+  Config.grad_max_norm = 0.1 
+  Config.grad_max_val = 0.1 
+  
+  Config.anneal_nearfar = True 
+  Config.anneal_nearfar_steps = 512 
+  Config.anneal_nearfar_perc = 0.0001 
+  Config.anneal_mid_perc = 1.0 
+  
+  Config.depth_tvnorm_loss_mult = 0.1 
+  Config.depth_tvnorm_decay = True 
+  Config.depth_tvnorm_maxstep = 512 
+  Config.depth_tvnorm_loss_mult_start = 400.0 
+  Config.depth_tvnorm_loss_mult_end = 0.1 
+  
+  Config.flow_loss_mult = 0.0 
+  Config.train_render_every = 5000 
+ 

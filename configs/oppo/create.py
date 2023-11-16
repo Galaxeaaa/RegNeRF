@@ -1,7 +1,7 @@
 # Define the list of values
 values = ["stone", "pumpkin2", "fabric_toy", "potato", "pine", "fabric_mushroom", "fabric_cow", "fabric_birthday_cake"]
 ids = ["04", "27", "29", "39", "40", "44", "50", "62"]
-n_views = [6]
+n_views = [4, 6]
 
 # Loop through the list of values
 for n in n_views:
