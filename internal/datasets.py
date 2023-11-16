@@ -877,6 +877,14 @@ class Blender(Dataset):
 
   def _load_renderings(self, config):
     """Load images from disk."""
+
+    BLENDER_TO_OPENCV_MATRIX = np.array([
+        [1,  0,  0,  0],
+        [0, -1,  0,  0],
+        [0,  0, -1,  0],
+        [0,  0,  0,  1]
+    ], dtype=np.float32)
+
     if config.render_path:
       raise ValueError('render_path cannot be used for the blender dataset.')
     with utils.open_file(
@@ -915,7 +923,7 @@ class Blender(Dataset):
         if self.load_normals:
           normal_image = downsample(normal_image, config.factor)
 
-      cams.append(np.array(frame['transform_matrix'], dtype=np.float32))
+      cams.append(np.array(frame['transform_matrix'], dtype=np.float32) @ BLENDER_TO_OPENCV_MATRIX)
       images.append(image)
       if self.load_disps:
         disp_images.append(disp_image)
