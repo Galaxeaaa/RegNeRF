@@ -1444,6 +1444,13 @@ class DTU(Dataset):
                    34, 33]
       test_idx = [1, 2, 9, 10, 11, 12, 14, 15, 23, 26, 27, 31, 32, 35, 42, 46]
       split_indices = {'test': test_idx, 'train': train_idx}
+    elif config.dtu_split_type == 'zerorf':
+      if int(config.dtu_scan.replace("scan", "")) in [24, 37, 40, 55, 63, 65, 69]:
+        train_idx = [35, 2, 30]
+      else:
+        train_idx = [21, 26, 33]
+      test_idx = [i for i in range(49) if i not in train_idx]
+      split_indices = {'test': test_idx, 'train': train_idx}
     else:
       all_indices = np.arange(images.shape[0])
       split_indices = {
