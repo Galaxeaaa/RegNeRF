@@ -46,7 +46,7 @@ for n in n_views:
  # DTU \n \
 # DTU settings\n \
 Config.data_dir = "data/dtu/Rectified/"\n \
-Config.dtu_mask_path = "data/dtu/submission_data/idrmasks"\n \
+Config.dtu_mask_path = "data/dtu/dtu_{value}/mask"\n \
 Config.checkpoint_dir = "out/dtu/{value}-{n}v"\n \
 Config.dtu_scan = "{value}"\n \
 Config.dtu_split_type = "zerorf"\n \

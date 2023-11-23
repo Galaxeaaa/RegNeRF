@@ -1,7 +1,7 @@
   # DTU 
  # DTU settings
  Config.data_dir = "data/dtu/Rectified/"
- Config.dtu_mask_path = "data/dtu/submission_data/idrmasks"
+ Config.dtu_mask_path = "data/dtu/dtu_scan97/mask"
  Config.checkpoint_dir = "out/dtu/scan97-3v"
  Config.dtu_scan = "scan97"
  Config.dtu_split_type = "zerorf"

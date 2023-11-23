@@ -1489,20 +1489,31 @@ class DTU(Dataset):
     factor = config.render_factor if (
         config.render_path and self.split == 'test') else config.factor
 
-    train_idx = [25, 22, 28, 40, 44, 48, 0, 8, 13]
-    exclude_idx = [3, 4, 5, 6, 7, 16, 17, 18, 19, 20, 21, 36, 37, 38, 39]
-    test_idx = [i for i in np.arange(49) if i not in train_idx + exclude_idx]
+    if config.dtu_split_type == 'zerorf':
+      if int(config.dtu_scan.replace("scan", "")) in [24, 37, 40, 55, 63, 65, 69]:
+        train_idx = [35, 2, 30]
+      else:
+        train_idx = [21, 26, 33]
+      test_idx = [i for i in range(49) if i not in train_idx]
+    else:
+      train_idx = [25, 22, 28, 40, 44, 48, 0, 8, 13]
+      exclude_idx = [3, 4, 5, 6, 7, 16, 17, 18, 19, 20, 21, 36, 37, 38, 39]
+      test_idx = [i for i in np.arange(49) if i not in train_idx + exclude_idx]
     indices = test_idx
     print('Using following indices', indices)
 
     mask_path = config.dtu_mask_path
-    idr_scans = ['scan40', 'scan55', 'scan63', 'scan110', 'scan114']
-    if config.dtu_scan in idr_scans:
+    if config.dtu_split_type == 'zerorf':
       maskf_fn = lambda x: os.path.join(  # pylint: disable=g-long-lambda
-          mask_path, config.dtu_scan, 'mask', f'{x:03d}.png')
+        mask_path, f'{x:03d}.png')
     else:
-      maskf_fn = lambda x: os.path.join(  # pylint: disable=g-long-lambda
-          mask_path, config.dtu_scan, f'{x:03d}.png')
+      idr_scans = ['scan40', 'scan55', 'scan63', 'scan110', 'scan114']
+      if config.dtu_scan in idr_scans:
+        maskf_fn = lambda x: os.path.join(  # pylint: disable=g-long-lambda
+            mask_path, config.dtu_scan, 'mask', f'{x:03d}.png')
+      else:
+        maskf_fn = lambda x: os.path.join(  # pylint: disable=g-long-lambda
+            mask_path, config.dtu_scan, f'{x:03d}.png')
 
     # Loop over all images.
     for idx_i in indices:
