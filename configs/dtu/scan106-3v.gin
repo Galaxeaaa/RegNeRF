@@ -11,6 +11,7 @@
  Config.far = 3.5
  Config.factor = 4
  Config.render_factor = 4
+ Config.dtu_light_cond = 3
  MLP.density_noise = 1.
  
  Config.n_input_views = 3

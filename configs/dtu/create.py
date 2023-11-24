@@ -56,6 +56,7 @@ Config.near = 0.5\n \
 Config.far = 3.5\n \
 Config.factor = 4\n \
 Config.render_factor = 4\n \
+Config.dtu_light_cond = 3\n \
 MLP.density_noise = 1.\n \
 \n \
 Config.n_input_views = 3\n \
